@@ -71,15 +71,15 @@ def safe_int_convert(v):
 # Sidebar sempre é renderizada para manter o seletor do colaborador
 # (Mas o CSS oculta ela na impressão física ou no PDF)
 st.sidebar.write("""
-## Liderados
+## Idalécio
 """ )
 
 Nome = st.sidebar.selectbox("Avaliados",df["Colab"].unique())
 
 # Filtros e dados comuns
 df_filtered = df[df["Colab"] == Nome]
-df_Média = df_filtered.groupby("Compet")[["Liderados"]].mean().round(decimals=1).reset_index()
-aval = ["Liderados",]
+df_Média = df_filtered.groupby("Compet")[["Autoavaliação", "Gestor", "Pares", "Liderados"]].mean().round(decimals=1).reset_index()
+aval = ["Autoavaliação", "Gestor", "Pares", "Liderados"]
 
 
 # -------------------------------------------------------------
@@ -98,7 +98,7 @@ if st.session_state.printing:
     
     # 1. Gráfico: Competências
     st.write("## Competências")
-    fig_comp = px.bar(df_Média, y=aval, x="Compet", barmode='group', color_discrete_map={"Liderados":"#FFD600",})
+    fig_comp = px.bar(df_Média, y=aval, x="Compet", barmode='group', color_discrete_map={"Autoavaliação":"#FF8C00", "Gestor":"#1565C0", "Pares":"#FFD600", "Liderados":"#C62828"})
     fig_comp.update_layout(xaxis_title="Competências", yaxis_title="Médias")
     
     plotly_config_comp = {
@@ -216,7 +216,7 @@ else:
     ## Competências
     """ ), Nome
 
-    fig_comp = px.bar(df_Média, y=aval, x="Compet", barmode='group', color_discrete_map={"Liderados":"#FFD600"})
+    fig_comp = px.bar(df_Média, y=aval, x="Compet", barmode='group', color_discrete_map={"Autoavaliação":"#FF8C00", "Gestor":"#1565C0", "Pares":"#FFD600", "Liderados":"#C62828"})
     fig_comp.update_layout(xaxis_title="Competências", yaxis_title="Médias")
 
     plotly_config_comp = {
@@ -237,7 +237,7 @@ else:
     ## Análise das Perguntas
     """ ), Nome
 
-    aval1 = ["Liderados"]
+    aval1 = ["Liderados", "Pares", "Gestor", "Autoavaliação"]
 
     df_CompetUniq = df_filtered["Competencia"].dropna().reset_index(drop = True)
     
@@ -248,7 +248,7 @@ else:
     df_filtered2 = df_filtered[df["Compet"] == unica_Competencia].copy()
     df_filtered2["Pergunta"] = (df_filtered2["Pergunta"].str.replace(" - ", "<br>") .str.replace(" / ", "<br>"))
 
-    fig_Perg = px.bar(df_filtered2, y="Pergunta", x=aval1, orientation="h", height=500, barmode="group", color_discrete_map={"Liderados":"#FFD600"})
+    fig_Perg = px.bar(df_filtered2, y="Pergunta", x=aval1, orientation="h", height=500, barmode="group", color_discrete_map={"Autoavaliação":"#FF8C00", "Gestor":"#1565C0", "Pares":"#FFD600", "Liderados":"#C62828"})
     fig_Perg.update_layout(xaxis_title="Médias", yaxis_title="Perguntas")
 
     plotly_config_perg = {
@@ -349,9 +349,9 @@ else:
 
     if AvalEquipe:
         df_filtered7 = df
-        df_MédiaSetor = df_filtered7.groupby("Nome")[["Liderados"]].mean().round(decimals=1).reset_index()
+        df_MédiaSetor = df_filtered7.groupby("Nome")[["Gestor", "Autoavaliação", "Pares", "Liderados"]].mean().round(decimals=1).reset_index()
         
-        fig_Setor = px.bar(df_MédiaSetor, x=aval, y="Nome", orientation="h", height=900, barmode='group', color_discrete_map={"Liderados":"#FFD600"})
+        fig_Setor = px.bar(df_MédiaSetor, x=aval, y="Nome", orientation="h", height=900, barmode='group', color_discrete_map={"Autoavaliação":"#FF8C00", "Gestor":"#1565C0", "Pares":"#FFD600", "Liderados":"#C62828"})
         fig_Setor.update_layout(xaxis_title="Média", yaxis_title="Colaborador", bargap=0.15, bargroupgap=0.05)
         
         plotly_config_setor = {
